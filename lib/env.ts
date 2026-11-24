@@ -8,6 +8,7 @@ const clientSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
   NEXT_PUBLIC_VAPID_PUBLIC_KEY: z.string().optional(),
+  NEXT_PUBLIC_SUPPORT_EMAIL: z.string().email().optional(),
 });
 
 export type ClientEnv = z.infer<typeof clientSchema>;
@@ -17,6 +18,7 @@ export const clientEnv: ClientEnv = clientSchema.parse({
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   NEXT_PUBLIC_VAPID_PUBLIC_KEY: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+  NEXT_PUBLIC_SUPPORT_EMAIL: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || undefined,
 });
 
 const optionalString = z.preprocess(
@@ -27,6 +29,8 @@ const optionalString = z.preprocess(
 const serverSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: optionalString,
   MIDTRANS_SERVER_KEY: optionalString,
+  MIDTRANS_API_URL: optionalString,
+  MIDTRANS_SNAP_URL: optionalString,
   MIDTRANS_IS_PRODUCTION: z
     .enum(["true", "false"])
     .default("false")
@@ -47,6 +51,8 @@ export function getServerEnv(): ServerEnv {
     const parsed = serverSchema.safeParse({
       SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
       MIDTRANS_SERVER_KEY: process.env.MIDTRANS_SERVER_KEY,
+      MIDTRANS_API_URL: process.env.MIDTRANS_API_URL,
+      MIDTRANS_SNAP_URL: process.env.MIDTRANS_SNAP_URL,
       MIDTRANS_IS_PRODUCTION: process.env.MIDTRANS_IS_PRODUCTION ?? "false",
       CRON_SECRET: process.env.CRON_SECRET,
       VAPID_PRIVATE_KEY: process.env.VAPID_PRIVATE_KEY,

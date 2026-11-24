@@ -1,3 +1,31 @@
+import type { PaymentStatus, SubscriptionStatus } from "@/types/domain";
+
+const PAYMENT_STATUS_LABELS: Record<PaymentStatus, string> = {
+  pending: "Menunggu pembayaran",
+  paid: "Lunas",
+  failed: "Gagal",
+  expired: "Kedaluwarsa",
+  refunded: "Dikembalikan",
+};
+
+const SUBSCRIPTION_STATUS_LABELS: Record<SubscriptionStatus | "free", string> = {
+  pending: "Menunggu",
+  active: "Aktif",
+  past_due: "Perlu pembayaran",
+  canceled: "Dibatalkan",
+  expired: "Berakhir",
+  free: "Free",
+};
+
+export function paymentStatusLabel(status: PaymentStatus | string): string {
+  return PAYMENT_STATUS_LABELS[status as PaymentStatus] ?? status;
+}
+
+export function subscriptionStatusLabel(status: SubscriptionStatus | "free" | string | null): string {
+  if (!status) return "Free";
+  return SUBSCRIPTION_STATUS_LABELS[status as SubscriptionStatus | "free"] ?? status;
+}
+
 export function formatIDR(amount: number): string {
   const formatted = new Intl.NumberFormat("id-ID", {
     style: "currency",

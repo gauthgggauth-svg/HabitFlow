@@ -37,6 +37,7 @@ Dokumen produk dan task breakdown: [`PRD.md`](./PRD.md), [`TASKS.md`](./TASKS.md
 - Scheduler reminder via Supabase Cron (interval 5 menit, idempotent).
 - Web push + email pengingat (email untuk paket berbayar).
 - Halaman pricing publik, paywall, checkout Midtrans, recurring subscription.
+- Customer portal: billing, riwayat pembayaran, receipt, batalkan, ganti paket.
 
 ### Fase 4: Transaksi & operasional
 - Webhook Midtrans dengan verifikasi signature, state machine idempotent.
@@ -84,9 +85,10 @@ Buka http://localhost:3000.
 | `NEXT_PUBLIC_APP_URL` | Base URL aplikasi |
 | `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase (local atau cloud) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server only (admin/cron) |
-| `MIDTRANS_SERVER_KEY` | Server only; `MIDTRANS_IS_PRODUCTION`, `MIDTRANS_SNAP_SCRIPT_URL` |
+| `MIDTRANS_SERVER_KEY` | Server only; `MIDTRANS_IS_PRODUCTION`, `MIDTRANS_API_URL`, `MIDTRANS_SNAP_URL` |
 | `CRON_SECRET` | Bearer token untuk endpoint internal scheduler |
 | `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT` | Web push |
+| `NEXT_PUBLIC_SUPPORT_EMAIL` | Email dukungan untuk pelanggan Pro |
 | `RESEND_API_KEY`, `EMAIL_FROM` | Email opsional |
 
 ## Deployment
@@ -97,6 +99,8 @@ MVP menyiapkan deployment di **Vercel** + **Supabase** (Free tier). Langkah:
 2. Connect project ke Vercel; tambahkan environment variables.
 3. Connect Supabase project (cloud) dan jalankan migrasi `supabase/migrations`.
 4. Set Midtrans server key, VAPID, Resend, dan cron schedule (Supabase Cron → `/api/cron/reminders`).
+5. Semua event Midtrans menulis ke tabel `webhook_events`; dashboard admin read-only
+   melihat KPI produktivitas, kesehatan webhook, dan langganan bermasalah.
 
 ## Asumsi & Scope
 
