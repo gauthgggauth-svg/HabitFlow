@@ -1,23 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, JetBrains_Mono } from "next/font/google";
 
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { getAccount } from "@/lib/auth/account";
 import { clientEnv } from "@/lib/env";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 const appUrl = clientEnv.NEXT_PUBLIC_APP_URL;
 
@@ -83,7 +70,7 @@ export default async function RootLayout({
   return (
     <html
       lang="id-ID"
-      className={`${geistSans.variable} ${jetbrainsMono.variable} h-full${dark ? " dark" : ""}`}
+      className={`h-full${dark ? " dark" : ""}`}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">
